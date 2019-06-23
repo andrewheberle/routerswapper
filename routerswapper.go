@@ -7,12 +7,7 @@ import (
 
 // Router interface is satisfied by any type that exports ServeHTTP
 type Router interface {
-	ServeHTTP(http.ResponseWriter, *http.Request)
-}
-
-// RouterHandler satisfies the Router interface
-type RouterHandler struct {
-	Router
+	http.Handler
 }
 
 // RouterSwapper is our only type
@@ -21,15 +16,15 @@ type RouterSwapper struct {
 	rt *RouterHandler
 }
 
-// Swap replaces the current RouterHandler
-func (rs *RouterSwapper) Swap(rt *RouterHandler) {
+// Swap replaces the current Router
+func (rs *RouterSwapper) Swap(rt *Router) {
 	rs.mu.Lock()
 	rs.rt = rt
 	rs.mu.Unlock()
 }
 
 // NewRouterSwapper creates a new RouteSwapper based on the passed Router
-func NewRouterSwapper(rt *RouterHandler) (rs *RouterSwapper) {
+func NewRouterSwapper(rt *Router) (rs *RouterSwapper) {
 	rs.rt = rt
 	return rs
 }
