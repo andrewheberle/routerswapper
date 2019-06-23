@@ -29,7 +29,7 @@ func (rs *RouterSwapper) Swap(rt *RouterHandler) {
 }
 
 // NewRouterSwapper creates a new RouteSwapper based on the passed Router
-func NewRouterSwapper(rt *Router) (rs *RouterSwapper) {
+func NewRouterSwapper(rt *RouterHandler) (rs *RouterSwapper) {
 	rs.rt = rt
 	return rs
 }
