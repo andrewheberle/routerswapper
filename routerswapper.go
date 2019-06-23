@@ -22,7 +22,7 @@ type RouterSwapper struct {
 }
 
 // Swap replaces the current RouterHandler
-func (rs *RouterSwapper) Swap(rt *Router) {
+func (rs *RouterSwapper) Swap(rt *RouterHandler) {
 	rs.mu.Lock()
 	rs.rt = rt
 	rs.mu.Unlock()
