@@ -17,14 +17,14 @@ type RouterSwapper struct {
 }
 
 // Swap replaces the current Router
-func (rs *RouterSwapper) Swap(rt *Router) {
+func (rs *RouterSwapper) Swap(rt Router) {
 	rs.mu.Lock()
 	rs.rt = rt
 	rs.mu.Unlock()
 }
 
 // NewRouterSwapper creates a new RouteSwapper based on the passed Router
-func NewRouterSwapper(rt *Router) (rs *RouterSwapper) {
+func NewRouterSwapper(rt Router) (rs *RouterSwapper) {
 	rs.rt = rt
 	return rs
 }
