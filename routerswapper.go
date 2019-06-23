@@ -23,8 +23,8 @@ func (rs *RouterSwapper) Swap(rt Router) {
 	rs.mu.Unlock()
 }
 
-// NewRouterSwapper creates a new RouteSwapper based on the passed Router
-func NewRouterSwapper(rt Router) *RouterSwapper {
+// New creates a new RouteSwapper based on the passed Router
+func New(rt Router) *RouterSwapper {
 	rs := new(RouterSwapper)
 	rs.rt = rt
 	return rs

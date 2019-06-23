@@ -20,7 +20,7 @@ Using `gorilla/mux`:
 r := mux.NewRouter()
 r.HandleFunc("/", firstHomeHandler)
 
-rs := routerswapper.NewRouterSwapper(r)
+rs := routerswapper.New(r)
 
 // Contrived function to Swap the Router after 60 seconds
 go func() {
@@ -43,7 +43,7 @@ Using `julienschmidt/httprouter`:
 r := httprouter.New()
 r.GET("/", firstHomeHandler)
 
-rs := routerswapper.NewRouterSwapper(r)
+rs := routerswapper.New(r)
 
 // Contrived function to Swap the Router after 60 seconds
 go func() {
