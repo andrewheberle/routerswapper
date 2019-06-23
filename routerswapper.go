@@ -5,26 +5,27 @@ import (
 	"sync"
 )
 
-// Router interface is satisfied by any type that exports ServeHTTP
+// Router interface is satisfied by any type that implements ServeHTTP
 type Router interface {
-	http.Handler
+	ServeHTTP(http.ResponseWriter, *http.Request)
 }
 
 // RouterSwapper is our only type
 type RouterSwapper struct {
 	mu sync.RWMutex
-	rt *Router
+	rt Router
 }
 
 // Swap replaces the current Router
-func (rs *RouterSwapper) Swap(rt *Router) {
+func (rs *RouterSwapper) Swap(rt Router) {
 	rs.mu.Lock()
 	rs.rt = rt
 	rs.mu.Unlock()
 }
 
 // NewRouterSwapper creates a new RouteSwapper based on the passed Router
-func NewRouterSwapper(rt *Router) (rs *RouterSwapper) {
+func NewRouterSwapper(rt Router) *RouterSwapper {
+	rs := new(RouterSwapper)
 	rs.rt = rt
 	return rs
 }
