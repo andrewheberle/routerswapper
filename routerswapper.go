@@ -13,7 +13,7 @@ type Router interface {
 // RouterSwapper is our only type
 type RouterSwapper struct {
 	mu sync.RWMutex
-	rt *Router
+	rt Router
 }
 
 // Swap replaces the current Router
