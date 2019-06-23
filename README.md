@@ -1,4 +1,4 @@
-# andrewheberle/routerswapper
+# andrewheberle/routerswapper [![GoDoc](https://godoc.org/gitlab.com/andrewheberle/routerswapper?status.svg)](http://godoc.org/gitlab.com/andrewheberle/routerswapper)
 
 Package `andrewheberle/routerswapper` implements a simple process to swap a Golang HTTP router (gorilla/mux etc) during runtime. This is aimed at allowing route changes based on a configuration change or update.
 
