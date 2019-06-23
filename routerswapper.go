@@ -5,14 +5,14 @@ import (
 	"sync"
 )
 
-// Router interface is satisfied by any type that exports ServeHTTP
-type Router interface {
+// router interface is satisfied by any type that exports ServeHTTP
+type router interface {
 	ServeHTTP(http.ResponseWriter, *http.Request)
 }
 
 // RouterHandler satisfies the Router interface
 type RouterHandler struct {
-	Router
+	router
 }
 
 // RouterSwapper is our only type
