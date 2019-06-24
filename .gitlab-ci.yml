@@ -13,15 +13,6 @@ before_script:
 stages:
   - test
 
-go1.11:
-  image: golang:1.11
-  stage: test
-  script:
-    - golangci-lint run
-    - go vet
-    - go test -race -short
-    - go test -short -covermode=count
-
 go1.12:
   image: golang:1.12
   stage: test
