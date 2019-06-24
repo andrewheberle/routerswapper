@@ -2,8 +2,8 @@
 image: golang:latest
 
 variables:
-  GO111MODULE: on
-  GOLINT_VERSION: v1.17.1
+  GO111MODULE: 'on'
+  GOLINT_VERSION: 'v1.17.1'
 
 
 before_script:
