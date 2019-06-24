@@ -19,9 +19,7 @@ go1.11:
   script:
     - golangci-lint run
     - go vet
-    - go test -short
     - go test -race -short
-    - go test -msan -short
     - go test -short -covermode=count
 
 go1.12:
@@ -30,7 +28,5 @@ go1.12:
   script:
     - golangci-lint run
     - go vet
-    - go test -short
     - go test -race -short
-    - go test -msan -short
     - go test -short -covermode=count
