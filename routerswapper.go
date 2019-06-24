@@ -19,15 +19,16 @@ type RouterSwapper struct {
 	rt router
 }
 
-// Swap replaces the current router.
+// Swap replaces the current router with a new version ensuring a lock is
+// taken so the swap is safe for concurrent use.
 func (rs *RouterSwapper) Swap(rt router) {
 	rs.mu.Lock()
 	rs.rt = rt
 	rs.mu.Unlock()
 }
 
-// New creates a new RouteSwapper based on the provided router
-// which can then be used where ServeHTTP would be used
+// New creates a new RouteSwapper based on the provided router which can
+// then be used where ServeHTTP would be used, such as http.ListenAndServe()
 func New(rt router) *RouterSwapper {
 	rs := new(RouterSwapper)
 	rs.rt = rt
