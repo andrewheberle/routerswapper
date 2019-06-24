@@ -2,6 +2,7 @@
 image: golang:latest
 
 variables:
+  GO111MODULE: on
   GOLINT_VERSION: v1.17.1
 
 
