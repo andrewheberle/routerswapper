@@ -36,7 +36,7 @@ func TestSwap(t *testing.T) {
 	}()
 
 	// do GET
-	resp, err := http.Get(testScheme+"://"+testHost+"/200")
+	resp, err := http.Get(testScheme + "://" + testHost + "/200")
 
 	if assert.Nil(err) {
 		assert.NotEqual(resp.StatusCode, http.StatusNotFound, "they should not be equal")
@@ -44,7 +44,7 @@ func TestSwap(t *testing.T) {
 	}
 
 	// do GET
-	resp, err = http.Get(testScheme+"://"+testHost+"/404")
+	resp, err = http.Get(testScheme + "://" + testHost + "/404")
 
 	if assert.Nil(err) {
 		assert.Equal(resp.StatusCode, http.StatusNotFound, "they should be equal")
@@ -58,7 +58,7 @@ func TestSwap(t *testing.T) {
 	rs.Swap(rt)
 
 	// do GET
-	resp, err = http.Get(testScheme+"://"+testHost+"/200")
+	resp, err = http.Get(testScheme + "://" + testHost + "/200")
 
 	if assert.Nil(err) {
 		assert.Equal(resp.StatusCode, http.StatusNotFound, "they should be equal")
@@ -66,7 +66,7 @@ func TestSwap(t *testing.T) {
 	}
 
 	// do GET
-	resp, err = http.Get(testScheme+"://"+testHost+"/404")
+	resp, err = http.Get(testScheme + "://" + testHost + "/404")
 
 	if assert.Nil(err) {
 		assert.NotEqual(resp.StatusCode, http.StatusNotFound, "they should not be equal")
