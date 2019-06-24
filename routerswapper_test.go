@@ -5,6 +5,7 @@ package routerswapper
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -19,57 +20,33 @@ func test404Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TestSwap(t *testing.T) {
-	assert := assert.New(t)
 
-	// defaults
-	testScheme := "http"
-	testHost := "127.0.0.1:8080"
+	assert := assert.New(t)
 
 	// new router
 	rt := http.NewServeMux()
-	rt.HandleFunc("/200", test200Handler)
-	rt.HandleFunc("/404", test404Handler)
+	rt.HandleFunc("/", test200Handler)
 	rs := New(rt)
-	go func() {
-		err := http.ListenAndServe(testHost, rs)
-		assert.Nil(err)
-	}()
+
+	ts := httptest.NewServer(rs)
+	defer ts.Close()
 
 	// do GET
-	resp, err := http.Get(testScheme + "://" + testHost + "/200")
+	resp, err := http.Get(ts.URL)
 
 	if assert.Nil(err) {
-		assert.NotEqual(resp.StatusCode, http.StatusNotFound, "they should not be equal")
 		assert.Equal(resp.StatusCode, http.StatusOK, "they should be equal")
-	}
-
-	// do GET
-	resp, err = http.Get(testScheme + "://" + testHost + "/404")
-
-	if assert.Nil(err) {
-		assert.Equal(resp.StatusCode, http.StatusNotFound, "they should be equal")
-		assert.NotEqual(resp.StatusCode, http.StatusOK, "they should not be equal")
 	}
 
 	// swap router
 	rt = http.NewServeMux()
-	rt.HandleFunc("/200", test404Handler)
-	rt.HandleFunc("/404", test200Handler)
+	rt.HandleFunc("/", test404Handler)
 	rs.Swap(rt)
 
 	// do GET
-	resp, err = http.Get(testScheme + "://" + testHost + "/200")
+	resp, err = http.Get(ts.URL)
 
 	if assert.Nil(err) {
 		assert.Equal(resp.StatusCode, http.StatusNotFound, "they should be equal")
-		assert.NotEqual(resp.StatusCode, http.StatusOK, "they should not be equal")
-	}
-
-	// do GET
-	resp, err = http.Get(testScheme + "://" + testHost + "/404")
-
-	if assert.Nil(err) {
-		assert.NotEqual(resp.StatusCode, http.StatusNotFound, "they should not be equal")
-		assert.Equal(resp.StatusCode, http.StatusOK, "they should be equal")
 	}
 }
