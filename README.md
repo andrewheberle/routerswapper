@@ -82,3 +82,7 @@ if err := http.ListenAndServe(":8080", rs); err != nil {
 ## Credits
 
 The code for this package came about from this `gorilla/mux` issue: [deleting routes](https://github.com/gorilla/mux/issues/82)
+
+## License
+
+This project is licensed under the terms of the MIT license.
