@@ -2,13 +2,12 @@
 image: golang:latest
 
 variables:
-  REPO_NAME: gitlab.com/andrewheberle/routerswapper
+  GOLINT_VERSION: v1.17.1
+
 
 before_script:
-  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
-  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
-  - cd $GOPATH/src/$REPO_NAME
-  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.17.1
+  - cd $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin $GOLINT_VERSION
 
 stages:
   - test
