@@ -1,5 +1,6 @@
 # andrewheberle/routerswapper
 
+[![pipeline status](https://gitlab.com/andrewheberle/routerswapper/badges/master/pipeline.svg)](https://gitlab.com/andrewheberle/routerswapper/commits/master)
 [![GoDoc](https://godoc.org/gitlab.com/andrewheberle/routerswapper?status.svg)](http://godoc.org/gitlab.com/andrewheberle/routerswapper)
 [![coverage report](https://gitlab.com/andrewheberle/routerswapper/badges/master/coverage.svg)](https://gitlab.com/andrewheberle/routerswapper/commits/master)
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/andrewheberle/routerswapper)](https://goreportcard.com/report/gitlab.com/andrewheberle/routerswapper)
