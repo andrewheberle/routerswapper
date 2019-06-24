@@ -12,7 +12,19 @@ before_script:
 stages:
   - test
 
-test:
+go1.11:
+  image: golang:1.11
+  stage: test
+  script:
+    - golangci-lint run
+    - go vet
+    - go test -short
+    - go test -race -short
+    - go test -msan -short
+    - go test -short -covermode=count
+
+go1.12:
+  image: golang:1.12
   stage: test
   script:
     - golangci-lint run
