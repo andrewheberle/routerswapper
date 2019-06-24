@@ -1,7 +1,4 @@
-// Package routerswapper implements a simple process to swap a Golang HTTP
-// router (gorilla/mux etc) during runtime. This is aimed at allowing
-// route/handler changes based on a configuration change or update.
-package routerswapper_test
+package routerswapper
 
 import (
 	"net/http"
@@ -9,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	. "gitlab.com/andrewheberle/routerswapper"
 )
 
 func test200Handler(w http.ResponseWriter, r *http.Request) {
