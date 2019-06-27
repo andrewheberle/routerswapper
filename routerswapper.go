@@ -8,12 +8,18 @@ import (
 	"sync"
 )
 
-// router interface is satisfied by any type that implements ServeHTTP
 type router interface {
 	ServeHTTP(http.ResponseWriter, *http.Request)
 }
 
-// RouterSwapper is the type used for swapping
+// A RouterSwapper can be used in place of a standard mux/router by
+// http.ListenAndServe() or http.ListenAndServeTLS().
+//
+// The RouterSwapper must be initialised with a call to 'New'.
+//
+// After creation, changes to the underlying mux/router must be handled
+// by a call to 'Swap' to ensure the change is done in a safe manner with a
+// lock.
 type RouterSwapper struct {
 	mu sync.RWMutex
 	rt router
@@ -27,7 +33,7 @@ func (rs *RouterSwapper) Swap(rt router) {
 	rs.mu.Unlock()
 }
 
-// New creates a new RouteSwapper based on the provided router which can
+// New creates a new RouterSwapper based on the provided router which can
 // then be used where ServeHTTP would be used, such as http.ListenAndServe()
 func New(rt router) *RouterSwapper {
 	rs := new(RouterSwapper)
