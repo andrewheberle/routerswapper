@@ -8,7 +8,10 @@ import (
 	"sync"
 )
 
-type router interface {
+// A Router responds to an HTTP request.
+//
+// Any http.Handler compatible router/mux will satisfy this interface.
+type Router interface {
 	ServeHTTP(http.ResponseWriter, *http.Request)
 }
 
@@ -22,12 +25,12 @@ type router interface {
 // lock.
 type RouterSwapper struct {
 	mu sync.RWMutex
-	rt router
+	rt Router
 }
 
 // Swap replaces the current router with a new version ensuring a lock is
 // taken so the swap is safe for concurrent use.
-func (rs *RouterSwapper) Swap(rt router) {
+func (rs *RouterSwapper) Swap(rt Router) {
 	rs.mu.Lock()
 	rs.rt = rt
 	rs.mu.Unlock()
@@ -35,7 +38,7 @@ func (rs *RouterSwapper) Swap(rt router) {
 
 // New creates a new RouterSwapper based on the provided router which can
 // then be used where ServeHTTP would be used, such as http.ListenAndServe()
-func New(rt router) *RouterSwapper {
+func New(rt Router) *RouterSwapper {
 	rs := new(RouterSwapper)
 	rs.rt = rt
 	return rs
