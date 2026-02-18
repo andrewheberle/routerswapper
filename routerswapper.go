@@ -1,6 +1,10 @@
-// Package routerswapper implements a simple process to swap a Golang HTTP
-// router (gorilla/mux etc) during runtime. This is aimed at allowing
-// route/handler changes based on a configuration change or update.
+// Package routerswapper implements a simple process to swap a [http.Handler]
+// during runtime. This is aimed at allowing [http.Handler] changes based on
+// a configuration change or update.
+//
+// By creating a new [Swapper] via [New] the [Swapper] can be used in place
+// of a [http.Handler] with the ability to [Swapper.Swap] the underlying
+// [http.Handler] at runtime.
 package routerswapper
 
 import (
@@ -8,47 +12,42 @@ import (
 	"sync"
 )
 
-// A Router responds to an HTTP request.
+// A Swapper can be used in place of any [http.Handler].
 //
-// Any http.Handler compatible router/mux will satisfy this interface.
-type Router interface {
-	ServeHTTP(http.ResponseWriter, *http.Request)
-}
-
-// A RouterSwapper can be used in place of a standard mux/router by
-// http.ListenAndServe() or http.ListenAndServeTLS().
+// The Swapper must be initialised with a call to [New].
 //
-// The RouterSwapper must be initialised with a call to 'New'.
-//
-// After creation, changes to the underlying mux/router must be handled
-// by a call to 'Swap' to ensure the change is done in a safe manner with a
+// After creation, changes to the underlying http.Handler must be completed
+// by a call to [Swapper.Swap] to ensure the change is done in a safe manner with a
 // lock.
-type RouterSwapper struct {
-	mu sync.RWMutex
-	rt Router
+type Swapper struct {
+	mu      sync.RWMutex
+	handler http.Handler
 }
 
-// Swap replaces the current router with a new version ensuring a lock is
+// Deprecated: Use [Swapper] instead
+type RouterSwapper = Swapper
+
+// Swap replaces the current [http.Handler] with a new version ensuring a lock is
 // taken so the swap is safe for concurrent use.
-func (rs *RouterSwapper) Swap(rt Router) {
+func (rs *Swapper) Swap(handler http.Handler) {
 	rs.mu.Lock()
-	rs.rt = rt
+	rs.handler = handler
 	rs.mu.Unlock()
 }
 
-// New creates a new RouterSwapper based on the provided router which can
-// then be used where ServeHTTP would be used, such as http.ListenAndServe()
-func New(rt Router) *RouterSwapper {
-	rs := new(RouterSwapper)
-	rs.rt = rt
+// New creates a new [Swapper] based on the provided [http.Handler] which can
+// then be used where any [http.Handler] would be used
+func New(handler http.Handler) *Swapper {
+	rs := new(Swapper)
+	rs.handler = handler
 	return rs
 }
 
-// ServeHTTP method for the RouterSwapper
-func (rs *RouterSwapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+// ServeHTTP method for the [Swapper]
+func (rs *Swapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rs.mu.RLock()
-	rt := rs.rt
+	handler := rs.handler
 	rs.mu.RUnlock()
 
-	rt.ServeHTTP(w, r)
+	handler.ServeHTTP(w, r)
 }
